@@ -1,0 +1,9 @@
+{
+	"compilerOptions": {
+		"target": "esnext",
+		"module": "system",
+		"moduleResolution": "node",
+		"noImplicitAny": false,
+		"removeComments": true
+	}
+}
