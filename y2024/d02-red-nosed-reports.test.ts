@@ -1,10 +1,5 @@
 import { describe, expect, it } from "vitest";
-import {
-	buildAlternates,
-	parse,
-	partOne,
-	partTwo,
-} from "./d02-red-nosed-reports";
+import { parse, partOne, partTwo } from "./d02-red-nosed-reports";
 
 describe("part one", () => {
 	it("runs", () => {
