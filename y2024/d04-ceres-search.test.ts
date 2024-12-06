@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { parse, partOne, partTwo } from "./d04";
+import { parse, partOne, partTwo } from "./d04-ceres-search";
 
 describe("part one", () => {
 	it("runs", () => {
