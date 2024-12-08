@@ -1,5 +1,6 @@
+import fs from "node:fs";
 import { describe, expect, it } from "vitest";
-import { parse, partOne, partTwo } from "./d06-guard-gallivant";
+import { partOne, partTwo } from "./d06-guard-gallivant";
 
 const example =
 	"....#.....\n" +
@@ -13,25 +14,26 @@ const example =
 	"#.........\n" +
 	"......#...";
 
+const input = fs.readFileSync(
+	"/Users/brennaswitzer/Source/aoc/aoc-typescript/y2024/inputs/d06.txt",
+	"utf8",
+);
+
 describe("part one", () => {
 	it("runs", () => {
-		const { grid, start } = parse(example);
-		expect(partOne(grid, start)).toStrictEqual(41);
+		expect(partOne(example)).toStrictEqual(41);
 	});
 	it("returns an answer for part one", () => {
-		const { grid, start } = parse();
-		expect(partOne(grid, start)).toStrictEqual(4789);
+		expect(partOne(input)).toStrictEqual(4789);
 	});
 });
 
 describe("part two", () => {
 	it("runs", () => {
-		const { grid, start } = parse(example);
-		expect(partTwo(grid, start)).toStrictEqual(6);
+		expect(partTwo(example)).toStrictEqual(6);
 	});
 
 	it("returns an answer for part two", () => {
-		const { grid, start } = parse();
-		expect(partTwo(grid, start)).toStrictEqual(0);
+		expect(partTwo(input)).toStrictEqual(1304);
 	});
 });
