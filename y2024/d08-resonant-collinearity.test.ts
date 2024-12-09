@@ -50,7 +50,7 @@ describe("part one", () => {
 
 describe("part two", () => {
 	it("gets antinodes correctly", () => {
-		expect(getMoarAntiNodes([0, 0], [2, 1], 10)).toStrictEqual([
+		expect(getMoarAntiNodes([0, 0], [2, 1], 10, 10)).toStrictEqual([
 			[4, 2],
 			[6, 3],
 			[8, 4],

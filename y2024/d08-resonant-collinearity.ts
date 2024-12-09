@@ -8,15 +8,18 @@ export function getAntiNodes(a: Pos, b: Pos): Pos[] {
 	];
 }
 
-export function getMoarAntiNodes(a: Pos, b: Pos, times): Pos[] {
-	const [dr, dc] = [a[0] - b[0], a[1] - b[1]];
-	const nodes = [];
-	let count = 0;
+const sub = (a: Pos, b: Pos): Pos => [a[0] - b[0], a[1] - b[1]];
+const add = (a: Pos, b: Pos): Pos => [a[0] + b[0], a[1] + b[1]];
 
-	while (count <= times + 2) {
-		nodes.push([a[0] + dr * count, a[1] + dc * count]);
-		nodes.push([b[0] - dr * count, b[1] - dc * count]);
-		count++;
+export function getMoarAntiNodes(a: Pos, b: Pos, w, h): Pos[] {
+	const d = sub(a, b);
+	const nodes = [];
+
+	for (let p = a; onMap(p, w, h); p = add(p, d)) {
+		nodes.push(p);
+	}
+	for (let p = a; onMap(p, w, h); p = sub(p, d)) {
+		nodes.push(p);
 	}
 
 	return nodes;
@@ -58,7 +61,7 @@ export function partTwo(input: string) {
 	for (const antennae of Object.values(locations)) {
 		const pairs = getPairs(antennae);
 		for (const pair of pairs) {
-			antinodes.push(...getMoarAntiNodes(pair[0], pair[1], w));
+			antinodes.push(...getMoarAntiNodes(pair[0], pair[1], w, h));
 		}
 	}
 
