@@ -19,6 +19,10 @@ export const getStart = (grid: string[][], target: string): Pos => {
 	return [0, 0];
 };
 
+export function at(grid, pos) {
+	return grid[pos[0]][pos[1]];
+}
+
 export const turnRight = (dir: Dir) => {
 	switch (dir) {
 		case "N":
