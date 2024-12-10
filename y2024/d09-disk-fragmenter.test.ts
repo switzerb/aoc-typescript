@@ -24,7 +24,7 @@ describe("part two", () => {
 		expect(partTwo(example)).toStrictEqual(2858);
 	});
 
-	it("returns an answer for part one", () => {
-		expect(partTwo(file)).toStrictEqual(0);
+	it("returns an answer for part two", () => {
+		expect(partTwo(file)).toStrictEqual(6469636832766);
 	});
 });

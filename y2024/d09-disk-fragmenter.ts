@@ -5,27 +5,20 @@ const isSpace = (digit) => digit === ".";
 const checksum = (diskmap: string[]) => {
 	const products = [];
 	for (const [idx, digit] of diskmap.entries()) {
-		products.push(idx * Number(digit));
+		if (digit !== ".") {
+			products.push(idx * Number(digit));
+		}
 	}
 	return products.reduce((a, n) => a + n, 0);
 };
 
-const buildBlocks = (diskMap: string[], ids?: number[]) => {
-	let id = 0;
+const buildBlocks = (diskMap: string[]) => {
 	const defrag = [];
-	for (const [idx, digit] of diskMap.entries()) {
-		const type = idx % 2 === 0 ? "file" : "free";
-		let count = 0;
-		while (count < Number(digit)) {
-			type === "file"
-				? ids?.length
-					? defrag.push(`${ids[id]}`)
-					: defrag.push(`${id}`)
-				: defrag.push(".");
-			count++;
-		}
-		if (type === "file") {
-			id++;
+	for (const [idx, size] of diskMap.entries()) {
+		const type = idx % 2 === 0 ? "file" : "space";
+
+		for (let i = 0; i < Number(size); i++) {
+			type === "file" ? defrag.push(`${idx / 2}`) : defrag.push(".");
 		}
 	}
 	return defrag;
@@ -49,64 +42,73 @@ export function partOne(input: string) {
 		times--;
 	}
 
+	console.log(blocks);
+
 	return checksum(blocks);
 }
 
-function partition(diskMap: string[]) {
-	const files = [];
-	const free = [];
-	for (const [idx, digit] of diskMap.entries()) {
-		idx % 2 === 0 ? files.push(digit) : free.push(digit);
+function build(diskMap) {
+	const blocks = [];
+	const fileMap = new Map();
+	const spaceMap = new Map();
+
+	for (const [idx, val] of diskMap.entries()) {
+		const type = idx % 2 === 0 ? "file" : "space";
+		const size = Number(val);
+		const id = Math.ceil(idx / 2);
+
+		for (let i = 0; i < size; i++) {
+			if (type === "file") {
+				if (!fileMap.has(id)) {
+					fileMap.set(id, { size, idx: blocks.length });
+				}
+				blocks.push(`${idx / 2}`);
+			} else {
+				if (!spaceMap.has(id - 1)) {
+					spaceMap.set(id - 1, { size, idx: blocks.length });
+				}
+				blocks.push(".");
+			}
+		}
 	}
-	return [files.reverse(), free];
+
+	const files = [];
+	const spaces = [];
+	for (const [key, value] of fileMap.entries()) {
+		files.push({ id: key, size: value.size, idx: value.idx });
+	}
+	for (const [_, value] of spaceMap.entries()) {
+		spaces.push({ size: value.size, idx: value.idx });
+	}
+	return { files, spaces, blocks };
 }
 
 export function partTwo(input: string) {
-	const diskMap = parse(input).map((n) => Number(n));
-	const defrag = cloneDeep(diskMap);
-	const ids = [...Array(Math.floor(diskMap.length / 2 + 1)).keys()];
-	let blockId = ids.length - 1;
-	let nope = 2;
+	const diskMap = parse(input);
+	const { files, spaces, blocks } = build(diskMap);
 
-	while (diskMap.length > 0) {
-		const firstLoop = diskMap.length === defrag.length;
-		const fileSize = diskMap.pop(); // get the next file to move
-		diskMap.pop(); // ignore the free space
-
-		// scan for free space as all odd indexes
-		for (let idx = 1; idx < defrag.length; idx += 2) {
-			if (idx < defrag.length - nope) {
-				const iterations = Math.ceil(idx / 2);
-				if (fileSize <= defrag[idx]) {
-					// change the id map to move the id
-					ids.splice(iterations, 0, blockId);
-					ids.splice(ids.lastIndexOf(blockId), 1);
-
-					// splice in the new file and free space
-					const spaceSize = defrag.at(idx);
-					defrag.splice(idx, 1, ...[0, fileSize, spaceSize - fileSize]);
-					defrag.splice(
-						-nope,
-						firstLoop ? 2 : 3,
-						defrag.at(-nope) + fileSize + (defrag.at(-nope - 2) ?? 0),
-					);
-					nope += 3;
-					break;
-				}
+	for (const file of files.reverse()) {
+		for (let i = 0; i < spaces.length; i++) {
+			const space = spaces[i];
+			if (space.idx > file.idx) {
+				break;
+			}
+			if (space && file.size <= space.size) {
+				file.idx = space.idx;
+				space.size = space.size - file.size;
+				space.idx = space.idx + file.size;
+				break;
 			}
 		}
-		blockId--;
 	}
-	// expected [2,0,2,0,1,0,3,0,3,1,2,1,3,4,4,1,4,5,4,2]
 
-	// actual [2,0,2,0,1,0,3,0,3,0,1,1,3,1,7,1,4,5,4,3]
-
-	// 00992111777.44.333....5555.6666.....8888..
-	const blocks = buildBlocks(
-		defrag.map((n) => String(n)),
-		ids,
-	);
-	return checksum(blocks);
+	const defrag = new Array(blocks.length).fill(".");
+	for (const file of files) {
+		for (let i = 0; i < file.size; i++) {
+			defrag[file.idx + i] = `${file.id}`;
+		}
+	}
+	return checksum(defrag);
 }
 
 export const parse = (input: string) => input.split("");
