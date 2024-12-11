@@ -1,4 +1,5 @@
 import fs from "node:fs";
+import path from "node:path";
 import { describe, expect, it } from "vitest";
 import { partOne, partTwo } from "./d10-hoof-it";
 
@@ -50,7 +51,7 @@ const example = `
 `;
 
 const file = fs.readFileSync(
-	"/Users/brennaswitzer/Source/aoc/aoc-typescript/y2024/inputs/d10.txt",
+	path.resolve(__dirname, './inputs/d10.txt'),
 	"utf8",
 );
 

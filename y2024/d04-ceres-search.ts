@@ -1,11 +1,12 @@
 import fs from "node:fs";
+import path from 'node:path';
 
 const WORD = ["X", "M", "A", "S"];
 
 export const parse = () => {
 	const grid: string[][] = [];
 	const file = fs.readFileSync(
-		"/Users/brennaswitzer/Source/aoc/aoc-typescript/y2024/inputs/d04.txt",
+		path.resolve(__dirname, './inputs/d04.txt'),
 		"utf8",
 	);
 	const lines = file.split("\n");

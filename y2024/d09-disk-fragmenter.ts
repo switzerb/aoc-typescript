@@ -41,9 +41,6 @@ export function partOne(input: string) {
 		blocks.splice(i, 1, n);
 		times--;
 	}
-
-	console.log(blocks);
-
 	return checksum(blocks);
 }
 

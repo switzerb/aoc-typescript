@@ -1,4 +1,5 @@
 import * as fs from "node:fs";
+import path from 'node:path';
 
 const isSafe = (report: number[]) => {
 	let isIncreasing = true;
@@ -69,7 +70,7 @@ export const partTwo = (input: number[][]) => {
 export const parse = () => {
 	const input = [];
 	const file = fs.readFileSync(
-		"/Users/brennaswitzer/Source/aoc/aoc-typescript/y2024/inputs/d02.txt",
+		path.resolve(__dirname, './inputs/d02.txt'),
 		"utf8",
 	);
 	const lines = file.split("\n");

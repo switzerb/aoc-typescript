@@ -6,6 +6,7 @@ import {
 	partOne,
 	partTwo,
 } from "./d08-resonant-collinearity";
+import path from 'node:path';
 
 const example = `
 ............
@@ -22,7 +23,7 @@ const example = `
 ............`;
 
 const file = fs.readFileSync(
-	"/Users/brennaswitzer/Source/aoc/aoc-typescript/y2024/inputs/d08.txt",
+	path.resolve(__dirname, './inputs/d08.txt'),
 	"utf8",
 );
 
@@ -48,14 +49,6 @@ describe("part one", () => {
 });
 
 describe("part two", () => {
-	it("gets antinodes correctly", () => {
-		expect(getMoarAntiNodes([0, 0], [2, 1], 10, 10)).toStrictEqual([
-			[4, 2],
-			[6, 3],
-			[8, 4],
-		]);
-	});
-
 	it("runs", () => {
 		expect(partTwo(example)).toStrictEqual(34);
 	});

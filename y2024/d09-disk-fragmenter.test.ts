@@ -1,11 +1,12 @@
 import fs from "node:fs";
 import { describe, expect, it } from "vitest";
 import { partOne, partTwo } from "./d09-disk-fragmenter";
+import path from 'node:path';
 
 const example = "2333133121414131402";
 
 const file = fs.readFileSync(
-	"/Users/brennaswitzer/Source/aoc/aoc-typescript/y2024/inputs/d09.txt",
+	path.resolve(__dirname, './inputs/d09.txt'),
 	"utf8",
 );
 

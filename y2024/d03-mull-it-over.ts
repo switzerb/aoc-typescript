@@ -1,10 +1,11 @@
 import fs from "node:fs";
+import path from 'node:path';
 
 const RE = /mul\((\d{1,3}),(\d{1,3})\)/g;
 
 export const parse = () => {
 	return fs.readFileSync(
-		"/Users/brennaswitzer/Source/aoc/aoc-typescript/y2024/inputs/d03.txt",
+		path.resolve(__dirname, './inputs/d03.txt'),
 		"utf8",
 	);
 };

@@ -1,4 +1,5 @@
 import fs from "node:fs";
+import path from 'node:path';
 
 export function evaluate(target: number, values: number[]) {
 	if (values.length < 2) {
@@ -66,7 +67,7 @@ export function partTwo(input: number[][]) {
 
 export function parse() {
 	const input = fs.readFileSync(
-		"/Users/brennaswitzer/Source/aoc/aoc-typescript/y2024/inputs/d07.txt",
+		path.resolve(__dirname, './inputs/d07.txt'),
 		"utf8",
 	);
 	return input.split("\n").map((lines) => {

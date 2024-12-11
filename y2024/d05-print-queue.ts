@@ -1,4 +1,5 @@
 import fs from "node:fs";
+import path from 'node:path';
 
 const isOrdered = (update: string[], rules) => {
 	let isOrdered = true;
@@ -69,7 +70,6 @@ export const partTwo = (
 			? fixed.push(update)
 			: unordered.push(swap(update, rules));
 	}
-	console.log({ unordered, fixed });
 	return fixed.reduce(
 		(acc, it) =>
 			Number.parseInt(acc) + Number.parseInt(it[Math.floor(it.length / 2)]),
@@ -80,7 +80,7 @@ export const partTwo = (
 export const parse = () => {
 	const rules: Record<string, string[]> = {};
 	const input = fs.readFileSync(
-		"/Users/brennaswitzer/Source/aoc/aoc-typescript/y2024/inputs/d05.txt",
+		path.resolve(__dirname, './inputs/d05.txt'),
 		"utf8",
 	);
 	const [rawRules, rawUpdates] = input.split("\n\n");
