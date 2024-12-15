@@ -1,4 +1,5 @@
 export type Dir = "N" | "S" | "E" | "W";
+export type DirFull = Dir | "NW" | "SW" | "NE" | "SE";
 export type Pos = [number, number];
 export type Grid = string[][];
 
@@ -36,16 +37,36 @@ export const turnRight = (dir: Dir) => {
 	}
 };
 
-export const next = (dir: Dir, pos: Pos): Pos => {
+export function inBounds(pos: Pos, w, h) {
+	return  pos[0] >= 0 && pos[0] < h && pos[1] >= 0 && pos[1] < w;
+}
+
+export function getNeighbors(pos: Pos, w, h, bounded = true): Pos[] {
+	const neighbors = [];
+	for (const dir of ["N", "S", "E", "W"] as Dir[]) {
+		neighbors.push(next(dir, pos));
+	}
+	return bounded? neighbors.filter((pos) => inBounds(pos,w,h)) : neighbors;
+}
+
+export const next = (dir: DirFull, pos: Pos): Pos => {
 	switch (dir) {
-		case "N":
-			return [pos[0] - 1, pos[1]];
-		case "S":
-			return [pos[0] + 1, pos[1]];
 		case "E":
 			return [pos[0], pos[1] + 1];
+		case "S":
+			return [pos[0] + 1, pos[1]];
 		case "W":
 			return [pos[0], pos[1] - 1];
+		case "N":
+			return [pos[0] - 1, pos[1]];
+		case "NW":
+			return [pos[0] - 1, pos[1] - 1];
+		case "SW":
+			return [pos[0] + 1, pos[1] - 1];
+		case "NE":
+			return [pos[0] - 1, pos[1] + 1];
+		case "SE":
+			return [pos[0] + 1, pos[1] + 1];
 	}
 };
 
