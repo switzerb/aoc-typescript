@@ -19,7 +19,7 @@ export function partOne(init: Robot[], rows = 103, cols = 101, steps = 100) {
 		return robots;
 	}
 
-	for (let i = 0; i <= steps; i++) {
+	for (let i = 0; i < steps; i++) {
 		if (i === 100) {
 			const map = Array.from(Array(rows), () => new Array(cols).fill(0));
 			for (const robot of robots) {
