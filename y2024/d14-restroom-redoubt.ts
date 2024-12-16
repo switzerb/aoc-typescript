@@ -61,21 +61,31 @@ export function partOne(init: Robot[], rows = 103, cols = 101, steps = 100) {
 
 export function partTwo(init: Robot[], rows = 103, cols = 101) {
 	let robots = init;
+	const maps = [];
 
 	function tick(robots: Robot[], step: number): Robot[] {
 		return robots.map((robot) => {
 			const [x, y] = robot.p;
 			const [dx, dy] = robot.v;
-			let calc_x = (x + dx * step + cols) % cols;
-			if (calc_x < 0) {
-				calc_x += cols;
+			let [next_x, next_y] = [
+				(x + dx * step + cols) % cols,
+				(y + dy * step + rows) % rows,
+			];
+			if (next_x < 0) {
+				next_x += cols;
 			}
-			robot.p = [calc_x, (y + dy + rows) % rows];
+			if (next_y < 0) {
+				next_y += rows;
+			}
+			robot.p = [next_x, next_y];
 			return robot;
 		});
 	}
 
-	for (let i = 0; i < cols; i++) {
+	for (let i = 0; i <= cols; i++) {
+		const step = 56 + i * cols;
+		console.log(step);
+
 		const map = Array.from(Array(rows), () => new Array(cols).fill(0));
 
 		for (const robot of robots) {
@@ -83,20 +93,16 @@ export function partTwo(init: Robot[], rows = 103, cols = 101) {
 			map[r][c] += 1;
 		}
 
-		fs.appendFile(
-			path.resolve(__dirname, "./something.txt"),
-			`STEP ${55 + i * cols} \n ${output(map)}`,
-			(err) => {
-				if (err) {
-					console.error(err);
-				} else {
-					// file written successfully
-				}
-			},
-		);
+		maps.push(`STEP ${step} \n ${output(map)}`);
 
-		robots = tick(robots, 55 + i * cols);
+		robots = tick(robots, step);
 	}
+
+	fs.writeFile(
+		path.resolve(__dirname, "./maps.txt"),
+		maps.join("\n\n"),
+		(_) => {},
+	);
 
 	return 0;
 }
