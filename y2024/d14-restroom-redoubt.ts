@@ -64,12 +64,16 @@ export function partTwo(init: Robot[], rows = 103, cols = 101) {
 	// (x + n * dx) % 101
 
 	function tick(robots: Robot[], step: number): Robot[] {
-		for (const robot of robots) {
+		return robots.map((robot) => {
 			const [x, y] = robot.p;
 			const [dx, dy] = robot.v;
-			robot.p = [(x + dx + cols) % cols, (y + dy * step + rows) % rows];
-		}
-		return robots;
+			let calc_y = y + dy * step;
+			if (calc_y < 0) {
+				calc_y += rows;
+			}
+			robot.p = [(x + dx + cols) % cols, (calc_y + rows) % rows];
+			return robot;
+		});
 	}
 
 	for (let i = 0; i < rows * cols; i++) {
