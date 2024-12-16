@@ -7,7 +7,7 @@ export type Robot = {
 	v: [number, number];
 };
 
-function tick(
+function after(
 	robots: Robot[],
 	step: number,
 	rows: number,
@@ -30,7 +30,7 @@ export function partOne(robots: Robot[], rows = 103, cols = 101, steps = 100) {
 	const mr = Math.floor(rows / 2);
 	const mc = Math.floor(cols / 2);
 
-	return tick(robots, steps, rows, cols)
+	return after(robots, steps, rows, cols)
 		.reduce(
 			(acc, [x, y]) => {
 				if (x < mc && y < mr) acc[0] += 1;
@@ -49,7 +49,7 @@ export function partTwo(init: Robot[], rows = 103, cols = 101) {
 
 	for (let i = 0; i <= cols; i++) {
 		const step = 55 + i * cols;
-		const positions = tick(init, step, rows, cols);
+		const positions = after(init, step, rows, cols);
 
 		const map = Array.from(Array(rows), () => new Array(cols).fill(0));
 		for (const [c, r] of positions) {
