@@ -12,7 +12,7 @@ function tick(
 	step: number,
 	rows: number,
 	cols: number,
-): Robot[] {
+): Pos[] {
 	return robots.map((robot) => {
 		const [x, y] = robot.p;
 		const [dx, dy] = robot.v;
@@ -22,7 +22,7 @@ function tick(
 		];
 		if (next_x < 0) next_x += cols;
 		if (next_y < 0) next_y += rows;
-		return { ...robot, p: [next_x, next_y] };
+		return [next_x, next_y];
 	});
 }
 
@@ -32,8 +32,7 @@ export function partOne(robots: Robot[], rows = 103, cols = 101, steps = 100) {
 
 	return tick(robots, steps, rows, cols)
 		.reduce(
-			(acc, robot) => {
-				const [x, y] = robot.p;
+			(acc, [x, y]) => {
 				if (x < mc && y < mr) acc[0] += 1;
 				if (x < mc && y > mr) acc[1] += 1;
 				if (x > mc && y < mr) acc[2] += 1;
@@ -50,12 +49,10 @@ export function partTwo(init: Robot[], rows = 103, cols = 101) {
 
 	for (let i = 0; i <= cols; i++) {
 		const step = 55 + i * cols;
-
-		const robots = tick(init, step, rows, cols);
+		const positions = tick(init, step, rows, cols);
 
 		const map = Array.from(Array(rows), () => new Array(cols).fill(0));
-		for (const robot of robots) {
-			const [c, r] = robot.p;
+		for (const [c, r] of positions) {
 			map[r][c] += 1;
 		}
 
