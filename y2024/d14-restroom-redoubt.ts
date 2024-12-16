@@ -48,6 +48,7 @@ export function partTwo(init: Robot[], rows = 103, cols = 101) {
 	const maps = [];
 
 	for (let i = 0; i <= cols; i++) {
+		/** this magic number 55 was arrived through visual inspection of the cycles of bots **/
 		const step = 55 + i * cols;
 		const positions = after(init, step, rows, cols);
 
