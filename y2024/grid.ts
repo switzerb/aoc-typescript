@@ -38,7 +38,7 @@ export const turnRight = (dir: Dir) => {
 };
 
 export function inBounds(pos: Pos, w, h) {
-	return  pos[0] >= 0 && pos[0] < h && pos[1] >= 0 && pos[1] < w;
+	return pos[0] >= 0 && pos[0] < h && pos[1] >= 0 && pos[1] < w;
 }
 
 export function getNeighbors(pos: Pos, w, h, bounded = true): Pos[] {
@@ -46,7 +46,7 @@ export function getNeighbors(pos: Pos, w, h, bounded = true): Pos[] {
 	for (const dir of ["N", "S", "E", "W"] as Dir[]) {
 		neighbors.push(next(dir, pos));
 	}
-	return bounded? neighbors.filter((pos) => inBounds(pos,w,h)) : neighbors;
+	return bounded ? neighbors.filter((pos) => inBounds(pos, w, h)) : neighbors;
 }
 
 export const next = (dir: DirFull, pos: Pos): Pos => {
@@ -74,9 +74,22 @@ export function print(grid: Grid) {
 	for (const [r, row] of grid.entries()) {
 		let line = "";
 		for (const [c, _] of row.entries()) {
-			line = line + grid[r][c];
+			if (Number(grid[r][c]) === 0) {
+				line = line + ".";
+			} else {
+				line = line + grid[r][c];
+			}
 		}
 		console.log(line);
 	}
 	console.log("\n");
+}
+
+export function output(grid: Grid) {
+	let map = "";
+	for (const row of grid) {
+		const forPrint = row.map((it) => (Number(it) === 0 ? "." : it));
+		map = `${map}\n${forPrint.join("")}`;
+	}
+	return map;
 }
