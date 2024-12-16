@@ -61,22 +61,21 @@ export function partOne(init: Robot[], rows = 103, cols = 101, steps = 100) {
 
 export function partTwo(init: Robot[], rows = 103, cols = 101) {
 	let robots = init;
-	// (x + n * dx) % 101
 
 	function tick(robots: Robot[], step: number): Robot[] {
 		return robots.map((robot) => {
 			const [x, y] = robot.p;
 			const [dx, dy] = robot.v;
-			let calc_y = y + dy * step;
-			if (calc_y < 0) {
-				calc_y += rows;
+			let calc_x = (x + dx * step + cols) % cols;
+			if (calc_x < 0) {
+				calc_x += cols;
 			}
-			robot.p = [(x + dx + cols) % cols, (calc_y + rows) % rows];
+			robot.p = [calc_x, (y + dy + rows) % rows];
 			return robot;
 		});
 	}
 
-	for (let i = 0; i < rows * cols; i++) {
+	for (let i = 0; i < cols; i++) {
 		const map = Array.from(Array(rows), () => new Array(cols).fill(0));
 
 		for (const robot of robots) {
@@ -86,7 +85,7 @@ export function partTwo(init: Robot[], rows = 103, cols = 101) {
 
 		fs.appendFile(
 			path.resolve(__dirname, "./something.txt"),
-			`STEP ${i} \n ${output(map)}`,
+			`STEP ${55 + i * cols} \n ${output(map)}`,
 			(err) => {
 				if (err) {
 					console.error(err);
@@ -96,7 +95,7 @@ export function partTwo(init: Robot[], rows = 103, cols = 101) {
 			},
 		);
 
-		robots = tick(robots, 28 + i * rows);
+		robots = tick(robots, 55 + i * cols);
 	}
 
 	return 0;
