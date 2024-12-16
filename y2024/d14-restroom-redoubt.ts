@@ -77,8 +77,7 @@ export function partTwo(init: Robot[], rows = 103, cols = 101) {
 			if (next_y < 0) {
 				next_y += rows;
 			}
-			robot.p = [next_x, next_y];
-			return robot;
+			return { ...robot, p: [next_x, next_y] };
 		});
 	}
 
