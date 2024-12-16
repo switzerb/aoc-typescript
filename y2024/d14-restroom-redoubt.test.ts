@@ -529,7 +529,6 @@ describe("part one", () => {
 
 describe("part two tree", () => {
 	it("runs", () => {
-		// expect(partOne(input, 103, 101, 100)).toStrictEqual(233709840);
 		expect(partTwo(input, 103, 101)).toStrictEqual(0);
 	});
 });
