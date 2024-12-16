@@ -527,8 +527,8 @@ describe("part one", () => {
 	});
 });
 
-describe("part two", () => {
+describe("part two tree", () => {
 	it("runs", () => {
-		expect(partTwo()).toStrictEqual(0);
+		expect(partTwo(input, 103, 101)).toStrictEqual(0);
 	});
 });
