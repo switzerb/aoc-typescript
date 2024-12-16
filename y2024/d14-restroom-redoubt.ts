@@ -71,12 +71,8 @@ export function partTwo(init: Robot[], rows = 103, cols = 101) {
 				(x + dx * step + cols) % cols,
 				(y + dy * step + rows) % rows,
 			];
-			if (next_x < 0) {
-				next_x += cols;
-			}
-			if (next_y < 0) {
-				next_y += rows;
-			}
+			if (next_x < 0) next_x += cols;
+			if (next_y < 0) next_y += rows;
 			return { ...robot, p: [next_x, next_y] };
 		});
 	}

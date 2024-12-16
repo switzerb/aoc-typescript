@@ -86,10 +86,9 @@ export function print(grid: Grid) {
 }
 
 export function output(grid: Grid) {
-	let map = "";
-	for (const row of grid) {
-		const forPrint = row.map((it) => (Number(it) === 0 ? "." : it));
-		map = `${map}\n${forPrint.join("")}`;
-	}
-	return map;
+	return grid
+		.map((row) => {
+			return `${row.map((it) => (it ? "#" : ".")).join("")}`;
+		})
+		.join("\n");
 }
