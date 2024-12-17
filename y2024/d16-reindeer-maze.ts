@@ -14,7 +14,7 @@ type Step = {
 	turns: number;
 };
 
-const SPACE = ".";
+const WALL = "#";
 
 export function partOne(input: string) {
 	const maze = to2DGrid(input);
@@ -32,11 +32,16 @@ export function partOne(input: string) {
 
 	while (queue.length) {
 		const current = queue.shift();
-		visited.add(`${current.pos.join()}${current.dir}`);
+		visited.add(`${current.pos.join()}-${current.dir}`);
 
 		for (const turn of ["N", "S", "E", "W"] as Dir[]) {
+			// turning 180 is pointless
+			if (current.dir === "N" && turn === "S") continue;
+			if (current.dir === "S" && turn === "N") continue;
+			if (current.dir === "E" && turn === "W") continue;
+			if (current.dir === "W" && turn === "E") continue;
+
 			const next = ahead(turn, current.pos);
-			if (visited.has(`${next.join()}${turn}`)) continue;
 
 			if (next.join() === end.join()) {
 				scores.push(
@@ -45,7 +50,9 @@ export function partOne(input: string) {
 				);
 			}
 
-			if (at(maze, next) === SPACE) {
+			if (visited.has(`${next.join()}-${turn}`)) continue;
+
+			if (at(maze, next) !== WALL) {
 				queue.push({
 					pos: next,
 					dir: turn,
