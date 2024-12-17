@@ -3,6 +3,14 @@ import path from "node:path";
 import { describe, expect, it } from "vitest";
 import { partOne } from "./d16-reindeer-maze";
 
+const simple = `
+#######
+#....E#
+#.#.#.#
+#S....#
+#######
+`;
+
 const example = `
 ###############
 #.......#....E#
@@ -46,8 +54,9 @@ const file = fs.readFileSync(
 
 describe("part one", () => {
 	it("runs", () => {
-		// expect(partOne(example)).toStrictEqual(7036);
-		// expect(partOne(another)).toStrictEqual(11048);
+		expect(partOne(simple)).toStrictEqual(1006);
+		expect(partOne(example)).toStrictEqual(7036);
+		expect(partOne(another)).toStrictEqual(11048);
 		expect(partOne(file)).toStrictEqual(0); //too high 155528
 	});
 });

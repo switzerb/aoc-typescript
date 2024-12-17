@@ -14,7 +14,6 @@ type Step = {
 	turns: number;
 };
 
-const WALL = "#";
 const SPACE = ".";
 
 export function partOne(input: string) {
@@ -33,11 +32,11 @@ export function partOne(input: string) {
 
 	while (queue.length) {
 		const current = queue.shift();
-		visited.add(current.pos.join());
+		visited.add(`${current.pos.join()}${current.dir}`);
 
 		for (const turn of ["N", "S", "E", "W"] as Dir[]) {
 			const next = ahead(turn, current.pos);
-			if (visited.has(next.join())) continue;
+			if (visited.has(`${next.join()}${turn}`)) continue;
 
 			if (next.join() === end.join()) {
 				scores.push(
