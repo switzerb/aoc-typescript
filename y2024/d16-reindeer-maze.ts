@@ -16,10 +16,14 @@ type Step = {
 
 const WALL = "#";
 
+function points(current) {
+	return current.turns * 1000 + current.moves;
+}
+
 export function partOne(input: string) {
 	const maze = to2DGrid(input);
 	const end = getStart(maze, "E");
-	const visited: Set<string> = new Set();
+	const visited: Map<string, number> = new Map();
 	const scores = [];
 
 	const queue: Step[] = [];
@@ -32,7 +36,10 @@ export function partOne(input: string) {
 
 	while (queue.length) {
 		const current = queue.shift();
-		visited.add(`${current.pos.join()}-${current.dir}`);
+		const key = `${current.pos.join()}-${current.dir}`;
+
+		if (visited.has(key) && visited.get(key) < points(current)) continue;
+		visited.set(key, points(current));
 
 		for (const turn of ["N", "S", "E", "W"] as Dir[]) {
 			// turning 180 is pointless
@@ -49,8 +56,6 @@ export function partOne(input: string) {
 						(current.moves + 1),
 				);
 			}
-
-			if (visited.has(`${next.join()}-${turn}`)) continue;
 
 			if (at(maze, next) !== WALL) {
 				queue.push({
