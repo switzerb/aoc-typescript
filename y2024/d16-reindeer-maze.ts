@@ -11,11 +11,17 @@ type Step = {
 	pos: Pos;
 	dir: Dir;
 	points: number;
+	path: Pos[];
+};
+
+type Score = {
+	points: number;
+	path: Pos[];
 };
 
 const WALL = "#";
 
-export function partOne(input: string) {
+export function partOne(input: string): [number, Score[]] {
 	const maze = to2DGrid(input);
 	const end = getStart(maze, "E").join(",");
 	const visited: Map<string, number> = new Map();
@@ -26,6 +32,7 @@ export function partOne(input: string) {
 		pos: getStart(maze, "S"),
 		dir: "E",
 		points: 0,
+		path: [],
 	});
 
 	while (queue.length) {
@@ -36,7 +43,7 @@ export function partOne(input: string) {
 		visited.set(key, current.points);
 
 		if (current.pos.join(",") === end) {
-			scores.push(current.points);
+			scores.push({ points: current.points, path: current.path });
 		}
 
 		for (const turn of ["N", "S", "E", "W"] as Dir[]) {
@@ -53,14 +60,18 @@ export function partOne(input: string) {
 					pos: next,
 					dir: turn,
 					points: current.points + (current.dir === turn ? 1 : 1001),
+					path: current.path.concat([current.pos]),
 				});
 			}
 		}
 	}
 
-	return Math.min(...scores);
+	const best = Math.min(...scores.map((score) => score.points));
+	return [best, scores.filter((score) => score.points === best)];
 }
 
-export function partTwo() {
-	return 0;
+export function partTwo(input: string) {
+	const [_, solution] = partOne(input);
+	const paths = solution.flatMap((each) => each.path).map((pos) => pos.join());
+	return new Set(paths).size + 1; // cheesy adding of the exit position
 }

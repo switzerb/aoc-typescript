@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
-import { partOne } from "./d16-reindeer-maze";
+import { partOne, partTwo } from "./d16-reindeer-maze";
 import { TimeUtils } from "./utils";
 
 const simple = `
@@ -55,9 +55,17 @@ const file = fs.readFileSync(
 
 describe("part one", () => {
 	it("runs", () => {
-		expect(partOne(simple)).toStrictEqual(1006);
-		expect(partOne(example)).toStrictEqual(7036);
-		expect(partOne(another)).toStrictEqual(11048);
-		expect(TimeUtils.log(() => partOne(file))).toStrictEqual(147628); //too high 155528
+		expect(partOne(simple)[0]).toStrictEqual(1006);
+		expect(partOne(example)[0]).toStrictEqual(7036);
+		expect(partOne(another)[0]).toStrictEqual(11048);
+		expect(TimeUtils.log(() => partOne(file)[0])).toStrictEqual(147628); //too high 155528
+	});
+});
+
+describe("part two", () => {
+	it("runs", () => {
+		expect(partTwo(example)).toStrictEqual(45);
+		expect(partTwo(another)).toStrictEqual(64);
+		expect(TimeUtils.log(() => partTwo(file))).toStrictEqual(670);
 	});
 });
