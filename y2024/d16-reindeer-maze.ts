@@ -37,13 +37,16 @@ export function partOne(input: string) {
 
 		for (const turn of ["N", "S", "E", "W"] as Dir[]) {
 			const next = ahead(turn, current.pos);
-			if (visited.has(next.join())) {
-				continue;
-			}
+			if (visited.has(next.join())) continue;
+
 			if (next.join() === end.join()) {
-				scores.push(current.turns * 1000 + current.moves + 1);
+				scores.push(
+					(current.turns + (current.dir !== turn ? 1 : 0)) * 1000 +
+						(current.moves + 1),
+				);
 			}
-			if (at(maze, next) === SPACE && !visited.has(next.join())) {
+
+			if (at(maze, next) === SPACE) {
 				queue.push({
 					pos: next,
 					dir: turn,
