@@ -1,9 +1,9 @@
 import { cloneDeep } from "lodash";
 
 type Computer = {
-	A: number;
-	B: number;
-	C: number;
+	A: bigint;
+	B: bigint;
+	C: bigint;
 	instr: number[];
 };
 
@@ -20,8 +20,8 @@ export function partOne(computer: Computer) {
 		output: [],
 	};
 
-	const combo = (operand: number, register) => {
-		if ([0, 1, 2, 3].includes(operand)) return operand;
+	const combo = (operand: number, register): bigint => {
+		if ([0, 1, 2, 3].includes(operand)) return BigInt(operand);
 		switch (operand) {
 			case 4:
 				return register.A;
@@ -41,19 +41,19 @@ export function partOne(computer: Computer) {
 			const opcode = opcodes[code];
 			switch (opcode) {
 				case "adv": {
-					next.A = Math.trunc(next.A / 2 ** combo(operand, next));
+					next.A = BigInt(next.A / 2n ** combo(operand, next));
 					break;
 				}
 				case "bxl": {
-					next.B = next.B ^ operand;
+					next.B = next.B ^ BigInt(operand);
 					break;
 				}
 				case "bst": {
-					next.B = combo(operand, next) % 8;
+					next.B = combo(operand, next) % 8n;
 					break;
 				}
 				case "jnz": {
-					p = next.A !== 0 ? operand : p + 2;
+					p = next.A !== 0n ? operand : p + 2;
 					break;
 				}
 				case "bxc": {
@@ -61,15 +61,15 @@ export function partOne(computer: Computer) {
 					break;
 				}
 				case "out": {
-					next.output.push(combo(operand, next) % 8);
+					next.output.push(combo(operand, next) % 8n);
 					break;
 				}
 				case "bdv": {
-					next.B = Math.trunc(next.A / 2 ** combo(operand, next));
+					next.B = BigInt(next.A / 2n ** combo(operand, next));
 					break;
 				}
 				case "cdv": {
-					next.C = Math.trunc(next.A / 2 ** combo(operand, next));
+					next.C = BigInt(next.A / 2n ** combo(operand, next));
 					break;
 				}
 			}
@@ -82,4 +82,27 @@ export function partOne(computer: Computer) {
 	}
 
 	return current.output.join(",");
+}
+
+function run(A: bigint, instr: number[]) {
+	return partOne({
+		A,
+		B: 0n,
+		C: 0n,
+		instr,
+	});
+}
+
+export function partTwo(expected: number[]) {
+	let register = 0n;
+	for (let len = expected.length - 1; len >= 0; len--) {
+		register *= 8n;
+		const currTarget = expected.slice(len).join(",");
+		while (true) {
+			const curr = run(register, expected);
+			if (curr === currTarget) break;
+			register++;
+		}
+	}
+	return register;
 }
