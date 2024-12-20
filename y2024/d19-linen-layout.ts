@@ -38,14 +38,10 @@ export function partOne(input: string) {
 
 export function partTwo(input: string) {
 	const { patterns, designs } = parse(input);
-	let total = 0;
-	for (const design of designs) {
-		const count = possibleMatches(patterns, design);
-		if (count > 0) {
-			total += count;
-		}
-	}
-	return total;
+	return designs.reduce(
+		(acc, design) => acc + possibleMatches(patterns, design),
+		0,
+	);
 }
 
 export function parse(input: string) {
