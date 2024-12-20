@@ -52,6 +52,6 @@ describe("part two", () => {
 		expect(partTwo(ex2)).toStrictEqual(4);
 		expect(partTwo(ex3)).toStrictEqual(6);
 		expect(partTwo(example)).toStrictEqual(16);
-		expect(partTwo(file)).toStrictEqual(0);
+		expect(partTwo(file)).toStrictEqual(575227823167869);
 	});
 });
