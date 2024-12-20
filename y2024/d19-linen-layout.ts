@@ -25,15 +25,9 @@ function possibleMatches(patterns: string[], design: string): number {
 
 export function partOne(input: string) {
 	const { patterns, designs } = parse(input);
-	let count = 0;
-
-	for (const design of designs) {
-		if (possibleMatches(patterns, design) > 0) {
-			count++;
-		}
-	}
-
-	return count;
+	return designs.reduce((acc, design) => {
+		return possibleMatches(patterns, design) ? acc + 1 : acc;
+	}, 0);
 }
 
 export function partTwo(input: string) {
