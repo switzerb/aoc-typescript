@@ -9,7 +9,7 @@ export const to2DGrid = (input: string) =>
 		.split("\n")
 		.map((line) => line.trim().split(""));
 
-export const getStart = (grid: string[][], target: string): Pos => {
+export const getTarget = (grid: string[][], target: string): Pos => {
 	for (const [row, line] of grid.entries()) {
 		for (const [col, point] of line.entries()) {
 			if (point === target) {
@@ -22,6 +22,12 @@ export const getStart = (grid: string[][], target: string): Pos => {
 
 export function at(grid, pos) {
 	return grid[pos[0]][pos[1]];
+}
+
+export function set(grid, pos, val) {
+	const [r, c] = pos;
+	grid[r][c] = val;
+	return;
 }
 
 export const turnRight = (dir: Dir) => {
@@ -75,7 +81,7 @@ export function print(grid: Grid) {
 		let line = "";
 		for (const [c, _] of row.entries()) {
 			if (Number(grid[r][c]) === 0) {
-				line = line + ".";
+				line = `${line}.`;
 			} else {
 				line = line + grid[r][c];
 			}
@@ -83,6 +89,10 @@ export function print(grid: Grid) {
 		console.log(line);
 	}
 	console.log("\n");
+}
+
+export function clone(grid: Grid) {
+	return grid.map((row) => row.slice());
 }
 
 export function output(grid: Grid) {

@@ -3,7 +3,7 @@ import { cloneDeep } from "lodash";
 import {
 	type Dir,
 	type Pos,
-	getStart,
+	getTarget,
 	next,
 	print,
 	to2DGrid,
@@ -12,7 +12,7 @@ import {
 
 const parse = (input: string) => {
 	const grid = to2DGrid(input);
-	const start = getStart(grid, "^");
+	const start = getTarget(grid, "^");
 
 	const onMap = (current: Pos) => {
 		return (

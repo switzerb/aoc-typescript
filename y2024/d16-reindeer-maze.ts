@@ -3,7 +3,7 @@ import {
 	type Pos,
 	next as ahead,
 	at,
-	getStart,
+	getTarget,
 	to2DGrid,
 } from "./grid";
 
@@ -23,13 +23,13 @@ const WALL = "#";
 
 export function partOne(input: string): [number, Score[]] {
 	const maze = to2DGrid(input);
-	const end = getStart(maze, "E").join(",");
+	const end = getTarget(maze, "E").join(",");
 	const visited: Map<string, number> = new Map();
 	const scores = [];
 
 	const queue: Step[] = [];
 	queue.push({
-		pos: getStart(maze, "S"),
+		pos: getTarget(maze, "S"),
 		dir: "E",
 		points: 0,
 		path: [],
