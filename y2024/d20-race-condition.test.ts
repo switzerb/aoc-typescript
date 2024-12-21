@@ -35,10 +35,6 @@ describe("part one", () => {
 
 describe("part two", () => {
 	it("runs", () => {
-		// expect(partTwo(example)).toStrictEqual(0);
 		expect(partTwo(file)).toStrictEqual(1013106);
-		// 1052793
-		// 1048178
-		// 925305
 	});
 });
