@@ -27,21 +27,49 @@ const directionalKeypad: Map<string, Pos> = new Map([
 	[">", [1, 2]],
 ]);
 
-const getSteps = (delta: Pos, canLeft = true): string => {
+const getSteps = (
+	delta: Pos,
+	blockLeft = false,
+	blockDown = false,
+	blockUp = false,
+): string => {
 	let moves = "";
 	const [r, c] = delta;
 
-	if (canLeft) {
-		if (c > 0) moves += ">".repeat(c);
-		if (c < 0) moves += "<".repeat(-c);
+	if (blockLeft) {
 		if (r > 0) moves += "v".repeat(r);
 		if (r < 0) moves += "^".repeat(-r);
-	} else {
-		if (r > 0) moves += "v".repeat(r);
-		if (r < 0) moves += "^".repeat(-r);
-		if (c > 0) moves += ">".repeat(c);
 		if (c < 0) moves += "<".repeat(-c);
+		if (c > 0) moves += ">".repeat(c);
+
+		moves = moves.concat("A"); // we always want to activate
+		return moves;
 	}
+
+	if (blockDown) {
+		if (c > 0) moves += ">".repeat(c);
+		if (c < 0) moves += "<".repeat(-c);
+		if (r > 0) moves += "v".repeat(r);
+		if (r < 0) moves += "^".repeat(-r);
+
+		moves = moves.concat("A"); // we always want to activate
+		return moves;
+	}
+
+	if (blockUp) {
+		if (c > 0) moves += ">".repeat(c);
+		if (c < 0) moves += "<".repeat(-c);
+		if (r < 0) moves += "^".repeat(-r);
+		if (r > 0) moves += "v".repeat(r);
+
+		moves = moves.concat("A"); // we always want to activate
+		return moves;
+	}
+
+	if (c < 0) moves += "<".repeat(-c);
+	if (c > 0) moves += ">".repeat(c);
+	if (r > 0) moves += "v".repeat(r);
+	if (r < 0) moves += "^".repeat(-r);
 
 	moves = moves.concat("A"); // we always want to activate
 	return moves;
@@ -58,20 +86,19 @@ export const translate = (code: string, keypad = "numeric") => {
 				? numericKeypad.get(key)
 				: directionalKeypad.get(key);
 
-		// if you are on row three and moving to col 0 on numeric keypad
-		if (keypad === "numeric" && curr[0] === 3 && next[1] === 0) {
-			const delta = Grid.diff(next, curr);
-			const steps = getSteps(delta, false);
-			moves += steps;
-		} else if (keypad === "directional" && curr[0] === 0 && next[1] === 0) {
-			const delta = Grid.diff(next, curr);
-			const steps = getSteps(delta, false);
-			moves += steps;
-		} else {
-			const delta = Grid.diff(next, curr);
-			const steps = getSteps(delta);
-			moves += steps;
-		}
+		const blockLeft =
+			keypad === "numeric"
+				? curr[0] === 3 && next[1] === 0
+				: curr[0] === 0 && next[1] === 0;
+
+		const blockDown = curr[1] === 0 && next[0] === 3;
+
+		const blockUp = curr[0] === 1 && next[0] === 0;
+
+		const delta = Grid.diff(next, curr);
+		const steps = getSteps(delta, blockLeft, blockDown, blockUp);
+		moves += steps;
+
 		curr = next;
 	}
 
