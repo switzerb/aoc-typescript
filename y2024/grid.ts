@@ -3,6 +3,16 @@ export type DirFull = Dir | "NW" | "SW" | "NE" | "SE";
 export type Pos = [number, number];
 export type Grid = string[][];
 
+export const Grid = {
+	to2D: (values: string) =>
+		values
+			.trim()
+			.split("\n")
+			.map((line) => line.trim().split("")),
+
+	diff: (a: Pos, b: Pos): Pos => [a[0] - b[0], a[1] - b[1]],
+};
+
 export const to2DGrid = (input: string) =>
 	input
 		.trim()
